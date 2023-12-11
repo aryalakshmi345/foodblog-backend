@@ -42,3 +42,32 @@ exports.login = async(req,res)=>{
         res.status(401).json(`Login API failed, Error: ${err}`)
     }
 }
+
+// edit profile
+exports.editUser = async(req,res)=>{
+    const userId = req.payload
+    const {username,email,password,profession,bio,website,profile} = req.body
+    const uploadImage = req.file?req.file.filename:profile
+    try{
+        const updateUser = await users.findByIdAndUpdate({_id:userId},{
+            username,email,password,profession,bio,website,profile:uploadImage
+        },{new:true})
+        await updateUser.save()
+        res.status(200).json(updateUser)
+    }catch(err){
+        res.status(401).json(`Error: ${err}`)
+}
+}
+
+// get userprofile details
+exports.getUserProfile = async(req,res)=>{
+    const {id} = req.params
+    try{
+        const profileDetials = await users.findOne({_id:id})
+        res.status(200).json(profileDetials)
+    }
+    catch(err){
+        res.status(401).json(`Error: ${err}`)
+}
+}
+

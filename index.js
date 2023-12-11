@@ -10,7 +10,7 @@ const fbServer = express()
 fbServer.use(cors())
 fbServer.use(express.json())
 fbServer.use(router)
-
+fbServer.use('/uploads',express.static('./uploads'))
 const PORT = 4000 || process.env.PORT
 
 fbServer.listen(PORT,()=>{
